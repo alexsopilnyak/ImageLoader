@@ -11,7 +11,7 @@ public protocol ImageProvider {
 }
  
 public final class ImageDownloadManager: ImageProvider {
-    static let shared = ImageDownloadManager()
+    public static let shared = ImageDownloadManager()
     private init() {}
     
     let cache = NSCache<NSString, UIImage>()
