@@ -41,12 +41,6 @@ public final class ImageLoader: ImageProvider {
             print("Return cached Image for \(url)")
             completion(cachedImage, indexPath, nil)
         } else {
-            if let operations = (downloadQueue.operations as? [DownloadOperation])?.filter({ $0.imageURL.absoluteString == url.absoluteString && $0.isFinished == false && $0.isExecuting == true}),
-               let operation = operations.first {
-                
-                print("Increase the priority for \(url)")
-                operation.queuePriority = .veryHigh
-            } else {
                 let downloadOperation = DownloadOperation(networkService: networkService, imageURL: url, indexPath: indexPath)
                 print("Create a new task for \(url)")
                 
@@ -61,7 +55,6 @@ public final class ImageLoader: ImageProvider {
                     completion(image, indexPath, error)
                 }
                 downloadQueue.addOperation(downloadOperation)
-            }
         }
     }
     
