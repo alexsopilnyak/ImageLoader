@@ -2,8 +2,10 @@ import UIKit
 import NetworkService
 
 final class DownloadOperation: Operation {
-    var downloadHandler: ImageHandler?
-    var imageURL: URL!
+   
+    public var downloadHandler: ImageHandler?
+    public var imageURL: URL!
+    
     private var indexPath: IndexPath?
     private let networkService: NetworkProvider
     
@@ -61,10 +63,10 @@ final class DownloadOperation: Operation {
             return
         }
             executing(true)
-            self.loadImageFromURL()
+            self.loadImage()
     }
     
-    private func loadImageFromURL() {
+    private func loadImage() {
         let resource = Resource(method: .get, url: imageURL)
         networkService.performRequest(for: resource) { result in
     
