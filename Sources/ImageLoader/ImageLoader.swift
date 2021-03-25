@@ -2,15 +2,18 @@
 import UIKit
 import NetworkService
 
-
+//MARK: Typealias
 public typealias ImageHandler = (_ image: UIImage?, _ url: URL, _ indexPath: IndexPath?, _ error: Error?) -> ()
 public typealias CompletionHandler = (_ image: UIImage?, _ indexPath: IndexPath?, _ error: Error?) -> ()
 
+
+//MARK: Protocol
 public protocol ImageProvider {
-    func downloadImage(from url: URL, indexPath: IndexPath?, completion: @escaping CompletionHandler)
+    func downloadImage(from url: String, indexPath: IndexPath?, completion: @escaping CompletionHandler)
     func cancellAllDownloads()
 }
 
+//MARK: ImageLoader
 public final class ImageLoader: ImageProvider {
     public static let shared = ImageLoader()
     
@@ -27,7 +30,12 @@ public final class ImageLoader: ImageProvider {
     
     private init() {}
     
-    public func downloadImage(from url: URL, indexPath: IndexPath?, completion: @escaping CompletionHandler) {
+    public func downloadImage(from url: String, indexPath: IndexPath?, completion: @escaping CompletionHandler) {
+        
+        guard let url = URL(string: url) else {
+            completion(nil, nil, LoaderError.badURL)
+            return
+        }
         
         if let cachedImage = cache.object(forKey: url.absoluteString as NSString) {
             print("Return cached Image for \(url)")
@@ -62,4 +70,5 @@ public final class ImageLoader: ImageProvider {
     }
     
 }
+
 
