@@ -16,8 +16,9 @@ public protocol ImageProvider {
 //MARK: ImageLoader
 public final class ImageLoader: ImageProvider {
     
+    
     private let cache = NSCache<NSString, UIImage>()
-    private let networkService = NetworkService()
+    private let networkProvider: NetworkProvider
     
     private lazy var downloadQueue: OperationQueue = {
         var queue = OperationQueue()
@@ -27,6 +28,9 @@ public final class ImageLoader: ImageProvider {
         return queue
     }()
     
+    public init(networkProvider: NetworkProvider) {
+        self.networkProvider = networkProvider
+    }
     
     public func downloadImage(from url: String, indexPath: IndexPath?, completion: @escaping CompletionHandler) {
         
@@ -38,7 +42,7 @@ public final class ImageLoader: ImageProvider {
         if let cachedImage = cache.object(forKey: url.absoluteString as NSString) {
             completion(cachedImage, indexPath, nil)
         } else {
-                let downloadOperation = DownloadOperation(networkService: networkService, imageURL: url, indexPath: indexPath)
+                let downloadOperation = DownloadOperation(networkService: networkProvider, imageURL: url, indexPath: indexPath)
 
                 if indexPath == nil {
                     downloadOperation.queuePriority = .high
