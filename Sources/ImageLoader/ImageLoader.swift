@@ -36,12 +36,10 @@ public final class ImageLoader: ImageProvider {
         }
         
         if let cachedImage = cache.object(forKey: url.absoluteString as NSString) {
-            print("Return cached Image for \(url)")
             completion(cachedImage, indexPath, nil)
         } else {
                 let downloadOperation = DownloadOperation(networkService: networkService, imageURL: url, indexPath: indexPath)
-                print("Create a new task for \(url)")
-                
+
                 if indexPath == nil {
                     downloadOperation.queuePriority = .high
                 }
