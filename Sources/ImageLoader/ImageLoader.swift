@@ -15,7 +15,6 @@ public protocol ImageProvider {
 
 //MARK: ImageLoader
 public final class ImageLoader: ImageProvider {
-    public static let shared = ImageLoader()
     
     private let cache = NSCache<NSString, UIImage>()
     private let networkService = NetworkService()
@@ -28,7 +27,6 @@ public final class ImageLoader: ImageProvider {
         return queue
     }()
     
-    private init() {}
     
     public func downloadImage(from url: String, indexPath: IndexPath?, completion: @escaping CompletionHandler) {
         
