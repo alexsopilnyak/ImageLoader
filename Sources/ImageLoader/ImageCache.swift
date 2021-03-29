@@ -48,12 +48,14 @@ public final class ImageCache {
     public func write(image: UIImage, forKey key: String, format: ImageFormat? = nil) {
         var data: Data? = nil
         
-        if let format = format, format == .png {
-            data = image.pngData()
-        }
-        else {
-            data = image.jpegData(compressionQuality: 0.9)
-        }
+//        if let format = format, format == .png {
+//            data = image.da
+//        }
+//        else {
+//            data = image.jpegData(compressionQuality: 0.9)
+//        }
+        
+        data = image.pngData()
         
         if let data = data {
             write(data: data, forKey: key)
