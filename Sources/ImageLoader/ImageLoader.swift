@@ -16,8 +16,6 @@ public protocol ImageProvider {
 //MARK: ImageLoader
 public final class ImageLoader: ImageProvider {
     
-    
-    private let cache = NSCache<NSString, UIImage>()
     private let networkProvider: NetworkProvider
     
     private lazy var downloadQueue: OperationQueue = {
@@ -39,22 +37,27 @@ public final class ImageLoader: ImageProvider {
             return
         }
         
-        if let cachedImage = cache.object(forKey: url.absoluteString as NSString) {
+        if let cachedImage = ImageCache.instance.readImageForKey(key: url.absoluteString) {
+            
             completion(cachedImage, indexPath, nil)
+            
+            print("GET FROM CACHE --- \(url.absoluteString)")
+            
         } else {
-                let downloadOperation = DownloadOperation(networkService: networkProvider, imageURL: url, indexPath: indexPath)
-
-                if indexPath == nil {
-                    downloadOperation.queuePriority = .high
+            print("NEW DOWNLOAD --- \(url.absoluteString)")
+            let downloadOperation = DownloadOperation(networkService: networkProvider, imageURL: url, indexPath: indexPath)
+            
+            if indexPath == nil {
+                downloadOperation.queuePriority = .high
+            }
+            
+            downloadOperation.downloadHandler = { image, url, indexPath, error in
+                if let newImage = image {
+                    ImageCache.instance.write(image: newImage, forKey: url.absoluteString)
                 }
-                
-                downloadOperation.downloadHandler = { image, url, indexPath, error in
-                    if let newImage = image {
-                        self.cache.setObject(newImage, forKey: url.absoluteString as NSString)
-                    }
-                    completion(image, indexPath, error)
-                }
-                downloadQueue.addOperation(downloadOperation)
+                completion(image, indexPath, error)
+            }
+            downloadQueue.addOperation(downloadOperation)
         }
     }
     
