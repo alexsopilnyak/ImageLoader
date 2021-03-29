@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "NetworkService",
+        "repositoryURL": "https://github.com/pavlovskyive/network-service",
+        "state": {
+          "branch": null,
+          "revision": "885f62b519a7645fe56e0579a035c18b9764c539",
+          "version": "1.3.2"
+        }
+      },
+      {
+        "package": "SwiftyBeaver",
+        "repositoryURL": "https://github.com/SwiftyBeaver/SwiftyBeaver.git",
+        "state": {
+          "branch": null,
+          "revision": "2c513a2e8fbfbd6495afc4a05941d8e3fdba68e9",
+          "version": "1.9.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
