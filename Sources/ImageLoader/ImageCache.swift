@@ -4,18 +4,15 @@
 //
 //  Created by Alexandr Sopilnyak on 29.03.2021.
 //
+//get some parts from https://github.com/huynguyencong/DataCache
 
 import UIKit
-
-public enum ImageFormat {
-    case unknown, png, jpeg
-}
 
 public final class ImageCache {
     
     static let cacheDirectoryPrefix = "com.nch.cache."
     static let ioQueuePrefix = "com.nch.queue."
-    static let defaultMaxCachePeriodInSecond: TimeInterval = 60 * 60 * 24 * 7         // a week
+    static let defaultMaxCachePeriodInSecond: TimeInterval = 60 * 60 * 24 * 7 
     
     public static var instance = ImageCache(name: "default")
     
@@ -45,15 +42,8 @@ public final class ImageCache {
     
     // MARK: Read/write image
     
-    public func write(image: UIImage, forKey key: String, format: ImageFormat? = nil) {
+    public func write(image: UIImage, forKey key: String) {
         var data: Data? = nil
-        
-//        if let format = format, format == .png {
-//            data = image.da
-//        }
-//        else {
-//            data = image.jpegData(compressionQuality: 0.9)
-//        }
         
         data = image.pngData()
         
@@ -102,7 +92,7 @@ public final class ImageCache {
                     print("Error while creating cache folder")
                 }
             }
-            print("Write data to disk for key \(key)")
+            
             self.fileManager.createFile(atPath: self.cachePath(forKey: key), contents: data, attributes: nil)
         }
     }
@@ -118,7 +108,7 @@ public final class ImageCache {
                 memCache.setObject(dataFromDisk as AnyObject, forKey: key as AnyObject)
             }
         }
-        print("Read data from disk for key: \(key)")
+    
         return data
     }
     
