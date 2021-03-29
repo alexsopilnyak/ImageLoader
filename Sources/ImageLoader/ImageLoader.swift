@@ -41,10 +41,7 @@ public final class ImageLoader: ImageProvider {
             
             completion(cachedImage, indexPath, nil)
             
-            print("GET FROM CACHE --- \(url.absoluteString)")
-            
         } else {
-            print("NEW DOWNLOAD --- \(url.absoluteString)")
             let downloadOperation = DownloadOperation(networkService: networkProvider, imageURL: url, indexPath: indexPath)
             
             if indexPath == nil {
